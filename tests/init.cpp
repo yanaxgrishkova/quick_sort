@@ -1,4 +1,4 @@
-#include <quickSort.hpp>
+#include <quick_sort.hpp>
 #include <catch.hpp>
 
 SCENARIO("quickSort") 
