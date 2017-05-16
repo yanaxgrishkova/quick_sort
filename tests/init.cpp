@@ -1,75 +1,15 @@
-#include <complex_t.hpp>
+#include <quickSort.hpp>
 #include <catch.hpp>
 
-SCENARIO("default constructor") {
-	complex_t complex;
-	REQUIRE(complex.real_() == 0);
-	REQUIRE(complex.imaginary_() == 0);
-}
-
-SCENARIO("constructor with params") {
-	complex_t complex(1, 2);
-	REQUIRE(complex.real_() == 1);
-	REQUIRE(complex.imaginary_() == 2);
-}
-
-SCENARIO("copy constructor") {
-	complex_t complex(1, 2);
-	complex_t copy(complex);
-	REQUIRE(copy.real_() == 1);
-	REQUIRE(copy.imaginary_() == 2);
-}
-
-SCENARIO("operator *") {
-	complex_t c1(7, 6);
-	complex_t c2(5, 4);
-	complex_t c3(11, 58);
-	REQUIRE((c1*c2)==c3);
-}
-
-SCENARIO("operator /") {
-	complex_t c1(7, 6);
-	complex_t c2(7, 6);
-	complex_t c3(1, 0);
-	REQUIRE((c1/c2)==c3);
-}
-
-SCENARIO("operator +=") {
-	complex_t c1(13, 1); 
-	complex_t c2(7, 6);
-	complex_t c3(20, 7);
-	REQUIRE((c1+=c2)==c3);
-}
-
-SCENARIO("operator -=") {
-	complex_t c1(13, 10); 
-	complex_t c2(7, 6);
-	complex_t c3(6, 4);
-	REQUIRE((c1-=c2)==c3);
-}
-
-SCENARIO("operator *=") {
-	complex_t c1(7, 6); 
-	complex_t c2(5, 4);
-	complex_t c3(11, 58);
-	REQUIRE((c1*=c2)==c3);
-}
-
-SCENARIO("operator /=") {
-	complex_t c1(7, 6); 
-	complex_t c2(7, 6);
-	complex_t c3(1, 0);
-	REQUIRE((c1/=c2)==c3);
-}
-
-SCENARIO("operator =") {
-	complex_t c1(7, 6); 
-	complex_t c2=c1;
-	REQUIRE(c2==c1);
-}
-
-SCENARIO("operator ==") {
-	complex_t c1(7, 6); 
-	complex_t c2(7, 6);
-	REQUIRE(c1==c2);
+SCENARIO("quickSort") 
+{
+	int a[3][3];
+	for (int i = 0; i < 3; ++i)
+		for (int j = 0; j < 3; ++j)
+			a[i][j] = 3 - i - j;
+	for (int i = 0; i < 3; ++i)
+		quickSort(&a[i][0], &a[i][2]);
+	REQUIRE(a[0][0] == 1); REQUIRE(a[0][1] == 2); REQUIRE(a[0][2] == 3);
+	REQUIRE(a[1][0] == 0); REQUIRE(a[1][1] == 1); REQUIRE(a[1][2] == 2);
+	REQUIRE(a[2][0] == -1); REQUIRE(a[2][1] == 0); REQUIRE(a[2][2] == 1);
 }
