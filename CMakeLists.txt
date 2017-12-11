@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.8)
 include("cmake/HunterGate.cmake")
 HunterGate(
     URL "https://github.com/yanaxgrishkova/hunter/archive/v1.1.tar.gz"
-    SHA1 "57d07480686f82ddc916a5980b4f2a18e5954c2b"
+    SHA1 "c08dc366a403d1b28943d846e3c80cecd852d40d"
 )
 
 project(quick_sort)
