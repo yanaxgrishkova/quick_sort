@@ -63,10 +63,13 @@ do_sort(BidirectionalIterator first, BidirectionalIterator last)
 	auto first_task = first_chunk->promise.get_future();
 	chunks_.push(first_chunk);
   
+	if (threads_.size() < max_threads_count_)
+        	threads_.push_back(std::thread{ &parallel_quick_sorter_t<BidirectionalIterator>::sort_thread, this });
+	
 	do_sort(part_, last);
 
 	while (first_task.wait_for(std::chrono::milliseconds(0)) != std::future_status::ready)
-		sort_thread();
+		try_sort_chunk();
 }
 
 template <typename BidirectionalIterator>
