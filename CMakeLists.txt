@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 11)
 include(cmake/HunterGate.cmake)
 
 HunterGate(
-    "https://github.com/yanaxgrishkova/stack/archive/v1.1.tar.gz"
+    "https://github.com/yanaxgrishkova/hunter/archive/v1.1.tar.gz"
     SHA1 "c08dc366a403d1b28943d846e3c80cecd852d40d"
 )
 
@@ -14,7 +14,7 @@ project(demo)
 option(BUILD_EXAMPLES "Build Examples" OFF)
 
 add_library(${PROJECT_NAME} INTERFACE)
-target_sources(${PROJECT_NAME} INTERFACE "${PROJECT_SOURCE_DIR}/include/quickSort.hpp")
+target_sources(${PROJECT_NAME} INTERFACE "${PROJECT_SOURCE_DIR}/include/quick_sort.hpp")
 
 target_include_directories(${PROJECT_NAME} INTERFACE "${PROJECT_SOURCE_DIR}/include")
 
