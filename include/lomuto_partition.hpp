@@ -21,7 +21,7 @@ void partition(Iterator first, Iterator last)
 		if (*j <= pivot)
 		{
 			i++;
-			std::swap(*i, *j)
+			std::swap(*i, *j);
 		}
 	}
 	std::swap(*(i + 1), *last);
