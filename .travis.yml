@@ -4,19 +4,6 @@ sudo: false
 matrix:
   include:
     - os: linux
-      compiler: gcc
-      addons: &gcc7
-        apt:
-          sources: ['ubuntu-toolchain-r-test']
-          packages: ['g++-7']
-      env: CXX_EVAL="g++-7" CC_EVAL="gcc-7" BUILD_TYPE='Release'
-
-    - os: linux
-      compiler: gcc
-      addons: *gcc7
-      env: CXX_EVAL="g++-7" CC_EVAL="gcc-7" BUILD_TYPE='Debug'
-
-    - os: linux
       compiler: clang
       env: BUILD_TYPE='Release' CXX_EVAL="clang++-5.0" CC_EVAL="clang-5.0"
       addons:
