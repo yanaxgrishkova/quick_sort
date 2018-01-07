@@ -5,7 +5,7 @@ void quick_sort(Iterator first, Iterator last)
 {
 	if (first < last)
 	{
-		p = partition(first, last);
+		auto p = partition(first, last);
 		quick_sort(first, p - 1);
 		quick_sort(p + 1, last);
 	}
