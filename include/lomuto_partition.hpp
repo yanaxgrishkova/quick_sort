@@ -1,13 +1,13 @@
 #include <iostream>
 
 template <typename Iterator>
-void quickSort(Iterator first, Iterator last)
+void quick_sort(Iterator first, Iterator last)
 {
 	if (first < last)
 	{
 		p = partition(first, last);
-		quickSort(first, p - 1);
-		quickSort(p + 1, last);
+		quick_sort(first, p - 1);
+		quick_sort(p + 1, last);
 	}
 }
 
