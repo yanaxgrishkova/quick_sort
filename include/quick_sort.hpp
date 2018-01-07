@@ -1,7 +1,7 @@
-#include <future>
 #include <lomuto_partition.hpp>
 #include <thread_safe_stack.hpp>
 #include <thread>
+#include <future>
 
 template <typename BidirectionalIterator>
 class parallel_quick_sorter_t
@@ -12,8 +12,8 @@ private:
 		BidirectionalIterator first;
 		BidirectionalIterator last;
 		std::promise<void> promise;
+		chunk_to_sort_t(BidirectionalIterator left, BidirectionalIterator right) : first{ left }, last{ right }{}
 	};
-  
 public:
 	parallel_quick_sorter_t();
 	parallel_quick_sorter_t(parallel_quick_sorter_t const & other) = delete;
@@ -26,14 +26,11 @@ public:
 	void sort_thread();
 	void try_sort_chunk();
 	void sort_chunk(std::shared_ptr<chunk_to_sort_t> chunk);
-  
 private:
 	std::vector<std::thread> threads_;
 	unsigned int const max_threads_count_;
 	stack<chunk_to_sort_t> chunks_;
 	std::atomic<bool> end_of_data_;
-	mutable std::mutex mutex_;
-
 };
 
 template <typename BidirectionalIterator>
@@ -54,21 +51,21 @@ template <typename BidirectionalIterator>
 void parallel_quick_sorter_t<BidirectionalIterator>::
 do_sort(BidirectionalIterator first, BidirectionalIterator last)
 {
-	if (first == last)
+	if (first == last) 
 		return;
-    
-	auto part_= partition(first, last);
-	auto first_chunk = std::make_shared<chunk_to_sort_t>(chunk_to_sort_t(first, part_));
+
+	auto pivot = partition(first, last); 
+	auto first_chunk = std::make_shared<chunk_to_sort_t>(chunk_to_sort_t(first, pivot));
 	auto first_task = first_chunk->promise.get_future();
 	chunks_.push(first_chunk);
-  
+	
 	if (threads_.size() < max_threads_count_)
         	threads_.push_back(std::thread{ &parallel_quick_sorter_t<BidirectionalIterator>::sort_thread, this });
 	
-	do_sort(part_, last);
+	do_sort(pivot, last);
 
 	while (first_task.wait_for(std::chrono::milliseconds(0)) != std::future_status::ready)
-		try_sort_chunk();
+	        try_sort_chunk();
 }
 
 template <typename BidirectionalIterator>
