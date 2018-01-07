@@ -83,7 +83,7 @@ sort_thread()
 {
 	while (!end_of_data_)
 	{
-		try_sort_chunk;
+		try_sort_chunk();
 		std::this_thread::yield();
 	}
 }
