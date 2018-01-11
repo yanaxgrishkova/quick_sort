@@ -43,8 +43,11 @@ parallel_quick_sorter_t<BidirectionalIterator>::
 ~parallel_quick_sorter_t()
 {
 	end_of_data_ = true;
+	
 	for (auto && thread : threads_)
+	{
 		thread.join();
+	}
 }
 
 template <typename BidirectionalIterator>
@@ -52,20 +55,26 @@ void parallel_quick_sorter_t<BidirectionalIterator>::
 do_sort(BidirectionalIterator first, BidirectionalIterator last)
 {
 	if (first == last) 
+	{
 		return;
+	}
 
-	auto pivot = partition(first, last); 
-	auto first_chunk = std::make_shared<chunk_to_sort_t>(chunk_to_sort_t(first, pivot));
+	auto part = partition(first, last); 
+	auto first_chunk = std::make_shared<chunk_to_sort_t>(chunk_to_sort_t(first, part));
 	auto first_task = first_chunk->promise.get_future();
 	chunks_.push(first_chunk);
 	
 	if (threads_.size() < max_threads_count_)
+	{
         	threads_.push_back(std::thread{ &parallel_quick_sorter_t<BidirectionalIterator>::sort_thread, this });
+	}
 	
-	do_sort(pivot, last);
+	do_sort(part, last);
 
 	while (first_task.wait_for(std::chrono::milliseconds(0)) != std::future_status::ready)
+	{
 	        try_sort_chunk();
+	}
 }
 
 template <typename BidirectionalIterator>
@@ -74,7 +83,9 @@ try_sort_chunk()
 {
 	auto chunk = chunks_.pop();
 	if (chunk)
+	{
 		sort_chunk(*chunk);
+	}
 }
 
 template <typename BidirectionalIterator>
@@ -100,7 +111,9 @@ template <typename BidirectionalIterator>
 void parallel_quick_sort(BidirectionalIterator first, BidirectionalIterator last)
 {
 	if (first == last)
+	{
 		return;
+	}
 
 	parallel_quick_sorter_t<BidirectionalIterator> sorter;
 
